@@ -1,0 +1,39 @@
+﻿@page "/register"
+
+
+
+<div class="text-center">
+
+	<EditForm Model="@user" OnValidSubmit="@RegisterUser" class="form-signin">
+		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<InputText type="text" id="inputEmail" class="form-control" placeholder="Username" @bind-Value="user.Email"></InputText>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="user.Password"></InputText>
+		<div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me"> Remember me
+			</label>
+		</div>
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+	</EditForm>
+
+</div>
+
+@code {
+    [Inject]
+    HttpClient httpClient{ get; set; }
+    private bool registerStatus;
+    private string? registerErrorMessage = null;
+	private User user = new User();
+
+
+    private async Task RegisterUser()
+    {
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync("https://localhost:7021/api/user/register",user);
+
+    }
+}
