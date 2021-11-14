@@ -1,0 +1,65 @@
+﻿@page "/signin"
+@using Blazored.LocalStorage
+
+@if (!signinStatus)
+{
+
+    <EditForm Model="@user" OnValidSubmit="@signinUser">
+        <DataAnnotationsValidator />
+        <div class="form-group my-3">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <InputText type="text" id="inputEmail" class="form-control" placeholder="Username" @bind-Value="user.Email"></InputText>
+            <ValidationMessage For="@(()=>user.Email)"></ValidationMessage>
+        </div>
+        <div class="form-grou my-3">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="user.Password"></InputText>
+            <ValidationMessage For="@(()=>user.Password)"></ValidationMessage>
+        </div>
+
+        <ValidationSummary />
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+
+        @if (attempTosigninFailed)
+        {
+            <p class="my-3 text-danger">@signinErrorMessage</p>
+        }
+
+    </EditForm>
+}
+else
+{
+    <h4>signin succesfull! Press the button below to go to the sign in page.</h4>
+    <a href="/signin" class="btn btn-primary btn-lg">Sign In</a>
+
+}
+
+
+
+@code {
+    [Inject] HttpClient httpClient { get; set; }
+    [Inject] ILocalStorageService localStorage { get; set; }
+    [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
+
+
+    private bool signinStatus = false;
+    private bool attempTosigninFailed = false;
+    private User user = new User();
+
+
+    private async Task signinUser()
+    {
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(APIEndpoints.s_signin, user);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            signinStatus = true;
+        }
+        else
+        {
+            attempTosigninFailed = true;
+
+        }
+    }
+}
