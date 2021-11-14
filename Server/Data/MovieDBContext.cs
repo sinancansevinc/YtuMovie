@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models;
 
 namespace Server.Data
 {
@@ -7,7 +8,9 @@ namespace Server.Data
     {
         public MovieDBContext(DbContextOptions<MovieDBContext>options):base(options)
         {
-
         }
+
+        public DbSet<MovieComment> MovieComments { get; set; }
+
     }
 }
