@@ -1,6 +1,8 @@
 ﻿@page "/signin"
 @using Blazored.LocalStorage
 
+<h3>Sign In</h3>
+
 @if (!signinStatus)
 {
 
@@ -23,16 +25,14 @@
 
         @if (attempTosigninFailed)
         {
-            <p class="my-3 text-danger">@signinErrorMessage</p>
+            <p class="my-3 text-danger">Sign in failed.Please check your username and password.</p>
         }
 
     </EditForm>
 }
 else
 {
-    <h4>signin succesfull! Press the button below to go to the sign in page.</h4>
-    <a href="/signin" class="btn btn-primary btn-lg">Sign In</a>
-
+    <h4>Sign In succesfull!</h4>
 }
 
 
@@ -54,6 +54,12 @@ else
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
+            string jsonWebToken =await  httpResponseMessage.Content.ReadAsStringAsync();
+            await localStorage.SetItemAsync("bearerToken",jsonWebToken);
+            await ((AppAuthenticationStateProvider)authenticationStateProvider).SignIn();
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", jsonWebToken);
+
             signinStatus = true;
         }
         else

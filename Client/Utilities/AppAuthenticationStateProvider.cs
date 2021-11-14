@@ -34,7 +34,7 @@ namespace Client.Utilities
                 }
 
                 var claims = ParseClaims(jwtSecurityToken);
-                var user = new ClaimsPrincipal(new ClaimsIdentity(claims,"jwt"));
+                var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
                 return new AuthenticationState(user);
 
@@ -50,8 +50,8 @@ namespace Client.Utilities
 
         private IList<Claim> ParseClaims(JwtSecurityToken jwtSecurityToken)
         {
-            
-            IList<Claim> claims=jwtSecurityToken.Claims.ToList();
+
+            IList<Claim> claims = jwtSecurityToken.Claims.ToList();
 
             claims.Add(new Claim(ClaimTypes.Name, jwtSecurityToken.Subject));
 
@@ -61,19 +61,20 @@ namespace Client.Utilities
         internal async Task SignIn()
         {
             string savedToken = await localStorageService.GetItemAsync<string>("bearerToken");
-            JwtSecurityToken jwtSecurityToken=jwtSecurityTokenHandler.ReadJwtToken(savedToken);
+            JwtSecurityToken jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(savedToken);
             var claims = ParseClaims(jwtSecurityToken);
             var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
-
-            Task<AuthenticationState> authenticationState=Task.FromResult(new AuthenticationState(user));
+            Task<AuthenticationState> authenticationState = Task.FromResult(new AuthenticationState(user));
             NotifyAuthenticationStateChanged(authenticationState);
 
         }
         internal void SignOut()
         {
-            ClaimsPrincipal nobody=new ClaimsPrincipal(new ClaimsIdentity());
+            ClaimsPrincipal nobody = new ClaimsPrincipal(new ClaimsIdentity());
             Task<AuthenticationState> authenticationState = Task.FromResult(new AuthenticationState(nobody));
             NotifyAuthenticationStateChanged(authenticationState);
         }
+
+    
     }
 }

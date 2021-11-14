@@ -1,0 +1,124 @@
+﻿@page "/toprated"
+
+<h1>Popular Movies</h1>
+
+@if (movies == null)
+{
+	<Loader />
+}
+else
+{
+
+
+	<div class="row">
+
+		@foreach (var movie in movies)
+		{
+			<div class="col-md-4">
+				<div class="card" style="width: 18rem;margin-bottom: 25px">
+					<img src="@movie.poster_path" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">@movie.title <span class="fa fa-star"></span> @movie.vote_average</h5>
+						<p class="card-text">@movie.overview.Substring(0, 50) ...</p>
+						<a class="btn btn-primary" @onclick="@(() => GoToDetail(movie.id))" style="color: white !important;" >Get Detail</a>
+					</div>
+				</div>
+			</div>
+		}
+
+	</div>
+
+	<div class="text-center">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item">
+					@if (currentPage > 1)
+					{
+						<a class="page-link" @onclick="async()=>await GetMovies(currentPage-1)" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only">Previous</span>
+						</a>
+					}
+
+				</li>
+
+
+				<li class="page-item"><a class="page-link" @onclick="async () => await GetMovies(currentPage)">@currentPage</a></li>
+
+
+
+				@if (!(currentPage > movieRoot.total_pages))
+				{
+					<li class="page-item">
+						<a class="page-link" @onclick="async () => await GetMovies(currentPage+1)" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only">Next</span>
+						</a>
+					</li>
+				}
+
+			</ul>
+		</nav>
+
+	</div>
+
+
+
+
+}
+
+@code {
+	[Inject]HttpClient httpClient{ get; set; }
+	[Inject]NavigationManager NavigationManager{ get; set; }
+	[Inject] IJSRuntime JsRuntime{ get; set; }
+
+
+
+	public List<Movie> movies;
+	public MovieRoot movieRoot;
+	string startImg = "https://image.tmdb.org/t/p/w342";
+	int currentPage = 1;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await GetMovies(currentPage);
+
+	}
+
+	private async Task GetMovies(int? i)
+	{
+
+		if (i > 1)
+		{
+			RefreshUp();
+			currentPage = Convert.ToInt32(i);
+		}
+		string apiUrl = APIEndpoints.s_topRated + currentPage.ToString();
+
+
+
+		movieRoot =await httpClient.GetFromJsonAsync<MovieRoot>(apiUrl);
+		movies = movieRoot.results;
+
+
+		foreach (var movie in movies)
+		{
+			movie.poster_path = startImg + movie.poster_path;
+			string newDate = movie.release_date.Replace("-", string.Empty);
+			movie.release_date = DateTime.ParseExact(newDate, "yyyyMMdd", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+		}
+
+	}
+
+	void GoToDetail(int movieId)
+	{
+		NavigationManager.NavigateTo("/moviedetail/" + movieId);
+
+	}
+	private async void RefreshUp()
+	{
+		await JsRuntime.InvokeVoidAsync("RefreshUp");
+	}
+
+
+}
