@@ -1,0 +1,52 @@
+﻿@page "/copydetail"
+
+
+
+    <div class="container">
+        <div class="cardMovie" style="border: none">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="preview col-md-6">
+
+                        <div class="preview-pic tab-content">
+
+                            <div class="tab-pane active" id="pic-1">
+                                <iframe width="420" height="315" src="https://www.youtube.com/watch?v=EXeTwQWrcwY"></iframe>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="details col-md-6">
+                        <h3 class="product-title">Batman</h3>
+                        <div class="rating">
+                            <div class="stars">
+                                <span class="fa fa-star checked"></span>
+                                <span>8.10</span>
+
+                            </div>
+                        </div>
+                        <p class="product-description">Gotham's new District Attorney has been elected. His name is Harvey Dent, and he has a radical new agenda that threatens to take down Gotham's organized crime underworld once and for all with an iron fist. But the emergence of the rogue vigilante known as Batman has caused problems for Dent and his agenda. A new criminal mastermind known only as "The Joker" has arrived and aims to take Gotham out from under Harvey Dent's iron fist. The Joker stages a masterfully planned bank robbery and robs the Gotham mob blind. He uses this money to stage a series of horrific and strategic attacks against the city and its people, each one carefully planned and aimed at Dent and Batman, while causing the rest of the city to enter panic mode. Meanwhile, Batman thinks he might have found a lead to The Joker thanks to Wayne Enterprises' dealings with a shady Chinese banker, and that takes Batman and Alfred to Hong Kong. The Joker has no rules, but Batman has only one, and the Joker aims to make Batman break his only rule. But who will be the one to take him out, will it be rogue vigilante Batman, or will it be elected official Harvey Dent, the new hero with a face?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <AuthorizeView>
+            <Authorized>
+                <h1>Authorized</h1>
+            </Authorized>
+            <NotAuthorized>
+                <h1>Not authorized</h1>
+            </NotAuthorized>
+        </AuthorizeView>
+
+
+    </div>
+
+
+
+
+
+@code {
+
+}
