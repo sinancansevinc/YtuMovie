@@ -1,13 +1,28 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Server.Data;
+using Server.Logging;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options=>
+#region Logging
+builder.Services.AddLogging(l =>
+{
+    l.ClearProviders()
+    .SetMinimumLevel(LogLevel.Information)
+    .AddProvider(new CustomLoggerProvider());
+
+});
+
+
+#endregion
+
+
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
     builder =>
@@ -17,6 +32,8 @@ builder.Services.AddCors(options=>
     .AllowAnyHeader());
 });
 
+
+
 builder.Services.AddDbContext<MovieDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>()
@@ -24,8 +41,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<MovieDBContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
     .AddJwtBearer(options =>
     {
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
 
@@ -46,13 +65,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+CustomLogger logger = new CustomLogger();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
 }
+
+
+
+app.Use(async (context, next) =>
+{
+    await next();
+
+
+    if (context.Response.StatusCode == (int)System.Net.HttpStatusCode.Unauthorized)
+    {
+        logger.LogInformation("Unauthorized request");
+    }
+});
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -17,14 +17,16 @@ namespace Server.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IConfiguration configuration;
+        private readonly ILogger<UserController> logger;
 
         // api/user
 
-        public UserController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public UserController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IConfiguration configuration,ILogger<UserController> logger)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         // api/user/register
@@ -33,6 +35,8 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] User user)
         {
+            logger.LogInformation("Register method is called");
+           
             string userName = user.Email;
             string password = user.Password;
 
