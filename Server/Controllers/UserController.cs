@@ -73,6 +73,7 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] User user)
         {
+            logger.LogInformation("User login process started");
             string userName = user.Email;
             string password = user.Password;
 
