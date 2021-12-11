@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Server;
 using Server.Data;
 using Server.Logging;
 using System.Text;
@@ -13,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLogging(l =>
 {
     l.ClearProviders()
-    .SetMinimumLevel(LogLevel.Information)
+    .SetMinimumLevel(LogLevel.Error)
     .AddProvider(new CustomLoggerProvider());
 
 });

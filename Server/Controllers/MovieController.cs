@@ -10,16 +10,33 @@ namespace Server.Controllers
     public class MovieController : ControllerBase
     {
         private readonly MovieDBContext context;
+        private readonly ILogger<MovieController> logger;
 
-        public MovieController(MovieDBContext context)
+        public MovieController(MovieDBContext context,ILogger<MovieController>logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
-        [HttpPost]
-        public void AddComment(MovieComment movieComment)
+        //[HttpPost]
+        //public void AddComment(MovieComment movieComment)
+        //{
+        //    context.Add(movieComment);
+        //}
+
+        [HttpGet("getcomments/{id}")]
+        public IEnumerable<MovieComment> GetMovieComments(int id)
         {
-            context.Add(movieComment);
+            try
+            {
+                return context.MovieComments.Where(comment => comment.Id == id).ToList();
+                //return movieService.GetMovieComments(id);
+            }
+            catch (Exception)
+            {
+                logger.LogInformation("There is an error at MovieController>GetComments");
+                throw;
+            }
         }
     }
 }

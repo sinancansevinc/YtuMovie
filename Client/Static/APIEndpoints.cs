@@ -16,6 +16,8 @@
         internal readonly static string s_startLink = "https://www.youtube.com/embed/";
         internal readonly static string s_videoUrl = "https://api.themoviedb.org/3/movie/movieId/videos?api_key=3b25acea89bf65c5da6ff5d06c6f0312&language=en-US";
         internal readonly static string s_startImg = "https://image.tmdb.org/t/p/w342";
+        internal readonly static string s_getMovieComments = $"{ServerBaseUrl}/api/movie/getcomments/1";
+
 
     }
 }

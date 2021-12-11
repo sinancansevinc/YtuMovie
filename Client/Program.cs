@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Client;
+using Client.Services;
 using Client.Utilities;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -10,6 +11,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddSingleton<HttpClient>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddBlazoredLocalStorage();
 

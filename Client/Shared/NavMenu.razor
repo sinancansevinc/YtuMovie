@@ -63,13 +63,13 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    [Inject] ILocalStorageService localStorage{ get; set; }
-    [Inject] AuthenticationStateProvider authenticationStateProvider{ get; set; }
+    [Inject] ILocalStorageService localStorage { get; set; }
+    [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
     [Inject] NavigationManager navigationManager { get; set; }
 
     private async Task SignOutProfile()
     {
-        if(await localStorage.ContainKeyAsync("bearerToken"))
+        if (await localStorage.ContainKeyAsync("bearerToken"))
         {
             await localStorage.RemoveItemAsync("bearerToken");
             ((AppAuthenticationStateProvider)authenticationStateProvider).SignOut();
