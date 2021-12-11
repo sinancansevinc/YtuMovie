@@ -1,10 +1,10 @@
 ﻿@page "/signin"
 @using Blazored.LocalStorage
 
-<h3>Sign In</h3>
 
 @if (!signinStatus)
 {
+    <h3>Sign In</h3>
 
     <EditForm Model="@user" OnValidSubmit="@signinUser">
         <DataAnnotationsValidator />

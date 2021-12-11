@@ -71,28 +71,58 @@ else
 			</div>
 		</div>
 
-		<AuthorizeView>
-			<Authorized>
-				<h1>Authorized</h1>
-			</Authorized>
-			<NotAuthorized>
-				<h1>Not authorized</h1>
-			</NotAuthorized>
-		</AuthorizeView>
+		    <div class="row mt-50 mb-100">
+        <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="d-flex flex-column col-md-8">
+                    @if (movieComments != null)
+                    {
 
-@*		<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img src="/images/logo.png" class="d-block w-100" alt="...">
-				</div>
-				<div class="carousel-item">
-					<img src="@movie.poster_path" class="d-block w-100" alt="...">
-				</div>
-				<div class="carousel-item">
-					<img src="..." class="d-block w-100" alt="...">
-				</div>
-			</div>
-		</div>*@
+                        @foreach (var item in movieComments)
+                        {
+                            <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
+                                <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                                <div class="d-flex flex-column ml-3">
+                                    <div class="d-flex flex-row post-title ml-10">
+                                        <h5>Is sketch 3.9.1 stable?</h5>
+                                        <span class="ml-2">(Jesshead)</span>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center align-content-center post-title ml-10">
+                                        <span>6 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <AuthorizeView>
+                        <Authorized>
+
+                            <div class="coment-bottom bg-white p-2 px-4">
+                                <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                                    <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                                    <input type="text" class="form-control mr-3" placeholder="Add comment">
+                                    <button class="btn btn-primary ml-10" type="button">Comment</button>
+
+                                </div>
+
+                            </div>
+
+                        </Authorized>
+                        <NotAuthorized>
+                            <NavLink class="nav-link" href="signin">
+                                <h3>Please sign in to post a comment</h3>
+                            </NavLink>
+                        </NotAuthorized>
+                    </AuthorizeView>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 	</div>
 }
 
@@ -101,18 +131,35 @@ else
 
 @code {
 	[Inject]HttpClient httpClient{ get; set; }
+	[Inject] IMovieService movieService { get; set; }
+	[Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
 
 	[Parameter]
 	public int MovieId { get; set; }
 
+	public List<Video> videos { get; set; }
+	public List<MovieComment> movieComments { get; set; }
 	public Movie movie { get; set; }
 	public VideoRoot rootVideo { get; set; }
-	public List<Video> videos { get; set; }
+	private User user = new User();
+	private MovieComment movieComment = new MovieComment();
+
 	public string startVideo = APIEndpoints.s_startLink;
 
 	protected override async Task OnInitializedAsync()
 	{
+		var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+		var loggedUser = authState.User;
+
+		if (loggedUser.Identity.IsAuthenticated)
+		{
+			 movieComment.UserId=authState.User.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+        }
+
+
 		await GetMovie(MovieId);
+		movieComments = (await movieService.GetMovieComments(1)).ToList();
+
 
 	}
 
@@ -133,5 +180,7 @@ else
 
 		}
 	}
+
+	//private async Task AddComment(MovieComment)
 
 }

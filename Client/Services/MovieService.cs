@@ -14,7 +14,9 @@ namespace Client.Services
         }
         public async Task<IEnumerable<MovieComment>> GetMovieComments(int id)
         {
-            return await  httpClient.GetFromJsonAsync<IEnumerable<MovieComment>>(APIEndpoints.s_getMovieComments);
+            var result= await  httpClient.GetFromJsonAsync<IEnumerable<MovieComment>>(APIEndpoints.s_getMovieComments);
+
+            return result;
         }
     }
 }

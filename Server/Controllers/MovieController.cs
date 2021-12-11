@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
 using Shared.Models;
+using Shared.ViewModels;
 
 namespace Server.Controllers
 {
@@ -18,18 +19,32 @@ namespace Server.Controllers
             this.logger = logger;
         }
 
-        //[HttpPost]
-        //public void AddComment(MovieComment movieComment)
-        //{
-        //    context.Add(movieComment);
-        //}
+        [HttpPost]
+        public void AddComment(MovieComment movieComment)
+        {
+            movieComment.CreateDate=DateTime.Now;
+            context.Add(movieComment);
+            context.SaveChanges();
+        }
 
         [HttpGet("getcomments/{id}")]
         public IEnumerable<MovieComment> GetMovieComments(int id)
         {
             try
             {
-                return context.MovieComments.Where(comment => comment.Id == id).ToList();
+                var comments=context.MovieComments.Where(comment => comment.Id == id).ToList();
+
+                var ap = (from p in context.Users
+                          join e in context.MovieComments on p.Id equals e.UserId
+                          select new CommentViewModel
+                          {
+                              UserName = p.UserName,
+                              CommentDate = e.CreateDate
+                          }).ToList();
+
+
+
+                return comments;
                 //return movieService.GetMovieComments(id);
             }
             catch (Exception)

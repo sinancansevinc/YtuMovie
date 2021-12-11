@@ -33,55 +33,54 @@
     </div>
 
     <div class="row mt-50 mb-100">
+        <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="d-flex flex-column col-md-8">
+                    @if (movieComments != null)
+                    {
 
-        <AuthorizeView>
-            <Authorized>
-                <div class="container mt-5 mb-5">
-                    <div class="d-flex justify-content-center row">
-                        <div class="d-flex flex-column col-md-8">
+                        @foreach (var item in movieComments)
+                        {
                             <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
                                 <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
-                                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><span>127</span><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
                                 <div class="d-flex flex-column ml-3">
-                                    <div class="d-flex flex-row post-title">
-                                        <h5>Is sketch 3.9.1 stable?</h5><span class="ml-2">(Jesshead)</span>
+                                    <div class="d-flex flex-row post-title ml-10">
+                                        <h5>Is sketch 3.9.1 stable?</h5>
+                                        <span class="ml-2">(Jesshead)</span>
                                     </div>
-                                    <div class="d-flex flex-row align-items-center align-content-center post-title"><span class="bdge mr-1">video</span><span class="mr-2 comments">13 comments&nbsp;</span><span class="mr-2 dot"></span><span>6 hours ago</span></div>
+                                    <div class="d-flex flex-row align-items-center align-content-center post-title ml-10">
+                                        <span>6 hours ago</span>
+                                    </div>
                                 </div>
                             </div>
+                        }
+                    }
+
+                    <AuthorizeView>
+                        <Authorized>
+
                             <div class="coment-bottom bg-white p-2 px-4">
-                                <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"><input type="text" class="form-control mr-3" placeholder="Add comment"><button class="btn btn-primary" type="button">Comment</button></div>
+                                <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                                    <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                                    <input type="text" class="form-control mr-3" placeholder="Add comment">
+                                    <button class="btn btn-primary ml-10" type="button">Comment</button>
 
-                                @*         @if (movieComments!=null)
-                                    {
-
-                                    @foreach (var item in movieComments)
-                                    {
-                                    <div class="commented-section mt-2">
-                                    <div class="d-flex flex-row align-items-center commented-user">
-                                    <h5 class="mr-2">Corey oates</h5><span class="dot mb-1"></span><span class="mb-1 ml-2">4 hours ago</span>
-                                    </div>
-                                    <div class="comment-text-sm"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></div>
-                                    <div class="reply-section">
-                                    </div>
-                                    </div>
-                                    }
-                                    }*@
-
-
-
+                                </div>
 
                             </div>
-                        </div>
-                    </div>
+
+                        </Authorized>
+                        <NotAuthorized>
+                            <NavLink class="nav-link" href="signin">
+                                <h3>Please sign in to post a comment</h3>
+                            </NavLink>
+                        </NotAuthorized>
+                    </AuthorizeView>
+
                 </div>
-            </Authorized>
-            <NotAuthorized>
-                <h1>Not authorized</h1>
-            </NotAuthorized>
-        </AuthorizeView>
-
-
+            </div>
+        </div>
 
     </div>
 
