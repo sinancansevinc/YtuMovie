@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
 using Shared.Models;
@@ -19,16 +20,20 @@ namespace Server.Controllers
             this.logger = logger;
         }
 
+        [Route("add")]
+        [AllowAnonymous]
         [HttpPost]
-        public void AddComment(MovieComment movieComment)
+        public async Task<IActionResult> Add([FromBody] MovieComment movieComment)
         {
-            movieComment.CreateDate=DateTime.Now;
-            context.Add(movieComment);
-            context.SaveChanges();
+            movieComment.CreateDate = DateTime.Now;
+            await context.AddAsync(movieComment);
+            await context.SaveChangesAsync();
+
+            return Ok();
         }
 
         [HttpGet("getcomments/{id}")]
-        public IEnumerable<MovieComment> GetMovieComments(int id)
+        public IList<CommentViewModel> GetMovieComments(int id)
         {
             try
             {
@@ -39,12 +44,14 @@ namespace Server.Controllers
                           select new CommentViewModel
                           {
                               UserName = p.UserName,
-                              CommentDate = e.CreateDate
+                              CommentDate = e.CreateDate,
+                              Comment=e.Comment
+                              
                           }).ToList();
 
 
 
-                return comments;
+                return ap;
                 //return movieService.GetMovieComments(id);
             }
             catch (Exception)

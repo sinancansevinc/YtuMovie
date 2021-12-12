@@ -14,7 +14,6 @@ namespace Shared.Models
         public string UserId { get; set; }
         public int MovieId { get; set; }
         public string Comment { get; set; }
-        public string CreateIp { get; set; }
         public DateTime CreateDate { get; set; }
     }
 }

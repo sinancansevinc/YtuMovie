@@ -1,5 +1,6 @@
 ﻿using Client.Static;
 using Shared.Models;
+using Shared.ViewModels;
 using System.Net.Http.Json;
 
 namespace Client.Services
@@ -12,9 +13,20 @@ namespace Client.Services
         {
             this.httpClient = httpClient;
         }
-        public async Task<IEnumerable<MovieComment>> GetMovieComments(int id)
+
+        public async Task<HttpResponseMessage>  AddComment(MovieComment movieComment)
         {
-            var result= await  httpClient.GetFromJsonAsync<IEnumerable<MovieComment>>(APIEndpoints.s_getMovieComments);
+           HttpResponseMessage response = await httpClient.PostAsJsonAsync(APIEndpoints.s_addComment, movieComment);
+
+            return response;
+           
+            
+        }
+
+        public async Task<IList<CommentViewModel>> GetMovieComments(int id)
+        {
+            var url=APIEndpoints.s_getMovieComments+id.ToString();
+            var result= await  httpClient.GetFromJsonAsync<IList<CommentViewModel>>(url);
 
             return result;
         }

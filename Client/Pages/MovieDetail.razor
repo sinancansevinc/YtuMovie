@@ -2,185 +2,228 @@
 
 @if (movie == null)
 {
-	<Loader />
+    <Loader />
 }
 
 else
 {
-	<div class="container">
-		<div class="cardMovie" style="border: none">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col-md-6">
+    <div class="container">
+        <div class="cardMovie" style="border: none">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="preview col-md-6">
 
-						<div class="preview-pic tab-content">
-							@if (movie.trailer_link != null)
-							{
-								<div class="tab-pane active" id="pic-1">
-									<iframe width="420" height="315" src="@movie.trailer_link"></iframe>
-								</div>
-
-							}
-							else
-							{
-								<div class="tab-pane active" id="pic-2">
-										<img src="@movie.poster_path" />
-									</div>
-							}
-
-
-
-						</div>
-
-					</div>
-					<div class="details col-md-6">
-						<h3 class="product-title">@movie.title</h3>
-						<div class="rating">
-							<div class="stars">
-								@for (int i = 1; i <= movie.vote_average; i++)
-								{
-									<span class="fa fa-star checked"></span>
-
-								}
-								<span>@movie.vote_average</span>
-
-							</div>
-						</div>
-						<p class="product-description">@movie.overview</p>
-						@*<h4 class="price">current price: <span>$180</span></h4>
-							<p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
-							<h5 class="sizes">
-								sizes:
-								<span class="size" data-toggle="tooltip" title="small">s</span>
-								<span class="size" data-toggle="tooltip" title="medium">m</span>
-								<span class="size" data-toggle="tooltip" title="large">l</span>
-								<span class="size" data-toggle="tooltip" title="xtra large">xl</span>
-							</h5>
-							<h5 class="colors">
-								colors:
-								<span class="color orange not-available" data-toggle="tooltip" title="Not In store"></span>
-								<span class="color green"></span>
-								<span class="color blue"></span>
-							</h5>
-							<div class="action">
-								<button class="add-to-cart btn btn-default" type="button">add to cart</button>
-								<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-							</div>*@
-					</div>
-				</div>
-			</div>
-		</div>
-
-		    <div class="row mt-50 mb-100">
-        <div class="container mt-5 mb-5">
-            <div class="d-flex justify-content-center row">
-                <div class="d-flex flex-column col-md-8">
-                    @if (movieComments != null)
-                    {
-
-                        @foreach (var item in movieComments)
-                        {
-                            <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
-                                <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
-                                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
-                                <div class="d-flex flex-column ml-3">
-                                    <div class="d-flex flex-row post-title ml-10">
-                                        <h5>Is sketch 3.9.1 stable?</h5>
-                                        <span class="ml-2">(Jesshead)</span>
-                                    </div>
-                                    <div class="d-flex flex-row align-items-center align-content-center post-title ml-10">
-                                        <span>6 hours ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-
-                    <AuthorizeView>
-                        <Authorized>
-
-                            <div class="coment-bottom bg-white p-2 px-4">
-                                <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                                    <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
-                                    <input type="text" class="form-control mr-3" placeholder="Add comment">
-                                    <button class="btn btn-primary ml-10" type="button">Comment</button>
-
+                        <div class="preview-pic tab-content">
+                            @if (movie.trailer_link != null)
+                            {
+                                <div class="tab-pane active" id="pic-1">
+                                    <iframe width="420" height="315" src="@movie.trailer_link"></iframe>
                                 </div>
 
+                            }
+                            else
+                            {
+                                <div class="tab-pane active" id="pic-2">
+                                    <img src="@movie.poster_path" />
+                                </div>
+                            }
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="details col-md-6">
+                        <h3 class="product-title">@movie.title</h3>
+                        <div class="rating">
+                            <div class="stars">
+                                @for (int i = 1; i <= movie.vote_average; i++)
+                                {
+                                    <span class="fa fa-star checked"></span>
+
+                                }
+                                <span>@movie.vote_average</span>
+
                             </div>
-
-                        </Authorized>
-                        <NotAuthorized>
-                            <NavLink class="nav-link" href="signin">
-                                <h3>Please sign in to post a comment</h3>
-                            </NavLink>
-                        </NotAuthorized>
-                    </AuthorizeView>
-
+                        </div>
+                        <p class="product-description">@movie.overview</p>
+                        @*<h4 class="price">current price: <span>$180</span></h4>
+                            <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
+                            <h5 class="sizes">
+                            sizes:
+                            <span class="size" data-toggle="tooltip" title="small">s</span>
+                            <span class="size" data-toggle="tooltip" title="medium">m</span>
+                            <span class="size" data-toggle="tooltip" title="large">l</span>
+                            <span class="size" data-toggle="tooltip" title="xtra large">xl</span>
+                            </h5>
+                            <h5 class="colors">
+                            colors:
+                            <span class="color orange not-available" data-toggle="tooltip" title="Not In store"></span>
+                            <span class="color green"></span>
+                            <span class="color blue"></span>
+                            </h5>
+                            <div class="action">
+                            <button class="add-to-cart btn btn-default" type="button">add to cart</button>
+                            <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+                            </div>*@
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="row mt-50 mb-100">
+            <div class="container mt-5 mb-5">
+                <div class="d-flex justify-content-center row">
+                    <div class="d-flex flex-column col-md-8">
+                        @if (commentViewModel != null)
+                        {
 
-	</div>
+                            @foreach (var item in commentViewModel)
+                            {
+                                <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
+                                    <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                                    <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                                    <div class="d-flex flex-column ml-3">
+                                        <div class="d-flex flex-row post-title ml-10">
+                                            <h5>@item.Comment</h5>
+                                            <span class="ml-2">(@item.UserName)</span>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center align-content-center post-title ml-10">
+                                            <span>@item.CommentDate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        <AuthorizeView>
+                            <Authorized>
+
+                                <div class="coment-bottom bg-white p-2 px-4">
+                                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                                        <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                                        <EditForm Context="comment" Model=@movieComment OnValidSubmit="@AddComment">
+                                            <InputText type="text" id="inoutComment" class="form-control mr-3" placeholder="Add comment" @bind-Value="movieComment.Comment"></InputText>
+
+                                            <ValidationMessage For="@(()=>movieComment.Comment)"></ValidationMessage>
+
+                                            <button class="btn btn-primary ml-10" type="submit">Comment</button>
+
+                                        </EditForm>
+
+
+                                    </div>
+
+                                </div>
+
+                            </Authorized>
+                            <NotAuthorized>
+                                <NavLink class="nav-link" href="signin">
+                                    <h3>Please sign in to post a comment</h3>
+                                </NavLink>
+                            </NotAuthorized>
+                        </AuthorizeView>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 }
 
 
 
 
 @code {
-	[Inject]HttpClient httpClient{ get; set; }
-	[Inject] IMovieService movieService { get; set; }
-	[Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
+    [Inject] HttpClient httpClient { get; set; }
+    [Inject] IMovieService movieService { get; set; }
+    [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
+    [Inject] NavigationManager navigationManager { get; set; }
 
-	[Parameter]
-	public int MovieId { get; set; }
 
-	public List<Video> videos { get; set; }
-	public List<MovieComment> movieComments { get; set; }
-	public Movie movie { get; set; }
-	public VideoRoot rootVideo { get; set; }
-	private User user = new User();
-	private MovieComment movieComment = new MovieComment();
+    [Parameter]
+    public int MovieId { get; set; }
 
-	public string startVideo = APIEndpoints.s_startLink;
+    public List<Video> videos { get; set; }
+    public IList<CommentViewModel> commentViewModel { get; set; }
+    public Movie movie { get; set; }
+    public VideoRoot rootVideo { get; set; }
+    private User user = new User();
+    private MovieComment movieComment = new MovieComment();
 
-	protected override async Task OnInitializedAsync()
-	{
-		var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var loggedUser = authState.User;
 
-		if (loggedUser.Identity.IsAuthenticated)
-		{
-			 movieComment.UserId=authState.User.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+    public string startVideo = APIEndpoints.s_startLink;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var loggedUser = authState.User;
+
+        if (loggedUser.Identity.IsAuthenticated)
+        {
+            movieComment.UserId = authState.User.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            movieComment.MovieId = MovieId;
         }
 
 
-		await GetMovie(MovieId);
-		movieComments = (await movieService.GetMovieComments(1)).ToList();
+        await GetMovie(MovieId);
+        commentViewModel = await (movieService.GetMovieComments(MovieId));
 
 
-	}
+    }
 
-	private async Task GetMovie(int movieId)
-	{
-		movie = await httpClient.GetFromJsonAsync<Movie>(APIEndpoints.s_movieDetail.Replace("movieId", movieId.ToString()));
+    private async Task GetMovie(int movieId)
+    {
+        movie = await httpClient.GetFromJsonAsync<Movie>(APIEndpoints.s_movieDetail.Replace("movieId", movieId.ToString()));
 
-		movie.poster_path = APIEndpoints.s_startImg + movie.poster_path;
+        movie.poster_path = APIEndpoints.s_startImg + movie.poster_path;
 
-		rootVideo=await httpClient.GetFromJsonAsync<VideoRoot>(APIEndpoints.s_videoUrl.Replace("movieId", movieId.ToString()));
+        rootVideo = await httpClient.GetFromJsonAsync<VideoRoot>(APIEndpoints.s_videoUrl.Replace("movieId", movieId.ToString()));
 
-		videos = rootVideo.results;
+        videos = rootVideo.results;
 
-		if (videos.Count > 0)
-		{
-			startVideo += videos.FirstOrDefault(p => p.type == "Trailer").key;
-			movie.trailer_link = startVideo;
+        if (videos.Count > 0)
+        {
+            startVideo += videos.FirstOrDefault(p => p.type == "Trailer").key;
+            movie.trailer_link = startVideo;
 
-		}
-	}
+        }
+    }
 
-	//private async Task AddComment(MovieComment)
+    private async Task AddComment()
+    {
 
+        //movieComment.CreateDate = DateTime.Now;
+
+
+        HttpResponseMessage httpResponseMessage = await movieService.AddComment(movieComment);
+        //await httpClient.PostAsJsonAsync(APIEndpoints.s_addComment, movieComment);
+
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+             var timer = new Timer(new TimerCallback(_ =>
+            {
+                navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+            }), null, 2000, 2000);
+
+          
+            var url = "/moviedetail/" + MovieId.ToString();
+            //navigationManager.NavigateTo(url);
+        }
+
+        //if (httpResponseMessage.IsSuccessStatusCode)
+        //{
+        //
+        //}
+
+
+
+
+
+
+
+    }
 }
