@@ -106,7 +106,8 @@ namespace Server.Controllers
             List<Claim> claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.Sub,identityUser.Email),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier,identityUser.Id)
+                new Claim(ClaimTypes.NameIdentifier,identityUser.Id),
+                new Claim("Id",identityUser.Id)
             };
 
             IList<string> roleNames = await userManager.GetRolesAsync(identityUser);

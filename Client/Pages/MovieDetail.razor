@@ -163,7 +163,7 @@ else
 
         if (loggedUser.Identity.IsAuthenticated)
         {
-            movieComment.UserId = authState.User.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            movieComment.UserId = authState.User.Claims.FirstOrDefault(p => p.Type == "Id").Value;
             movieComment.MovieId = MovieId;
         }
 
@@ -195,8 +195,8 @@ else
     private async Task AddComment()
     {
 
-        //movieComment.CreateDate = DateTime.Now;
 
+        //movieComment.CreateDate = DateTime.Now;
 
         HttpResponseMessage httpResponseMessage = await movieService.AddComment(movieComment);
         //await httpClient.PostAsJsonAsync(APIEndpoints.s_addComment, movieComment);
