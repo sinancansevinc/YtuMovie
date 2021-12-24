@@ -18,6 +18,7 @@
         internal readonly static string s_startImg = "https://image.tmdb.org/t/p/w342";
         internal readonly static string s_getMovieComments = $"{ServerBaseUrl}/api/movie/getcomments/";
         internal readonly static string s_addComment = $"{ServerBaseUrl}/api/movie/add";
+        internal readonly static string s_addGenres = $"{ServerBaseUrl}/api/genre/add";
 
 
     }

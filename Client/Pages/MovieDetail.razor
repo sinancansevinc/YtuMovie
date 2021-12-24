@@ -194,12 +194,7 @@ else
 
     private async Task AddComment()
     {
-
-
-        //movieComment.CreateDate = DateTime.Now;
-
         HttpResponseMessage httpResponseMessage = await movieService.AddComment(movieComment);
-        //await httpClient.PostAsJsonAsync(APIEndpoints.s_addComment, movieComment);
 
 
         if (httpResponseMessage.IsSuccessStatusCode)
