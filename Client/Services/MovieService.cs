@@ -20,18 +20,24 @@ namespace Client.Services
             return response;
         }
 
-        public async Task AddGenres()
+		public async  Task<IList<Genre>> GetGenres()
         {
-            
-            var result =await httpClient.GetFromJsonAsync<GenreRoot>("https://api.themoviedb.org/3/genre/movie/list?api_key=3b25acea89bf65c5da6ff5d06c6f0312&language=en-US");
+            var result = await httpClient.GetFromJsonAsync<IList<Genre>>(APIEndpoints.s_getGenres);
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(APIEndpoints.s_addGenres,result);
+            return result;
         }
 
         public async Task<IList<CommentViewModel>> GetMovieComments(int id)
         {
             var url=APIEndpoints.s_getMovieComments+id.ToString();
             var result= await  httpClient.GetFromJsonAsync<IList<CommentViewModel>>(url);
+
+            return result;
+        }
+
+        public async Task<MovieRoot> GetMovieRoot(string apiUrl)
+        {
+            var result=await httpClient.GetFromJsonAsync<MovieRoot>(apiUrl);
 
             return result;
         }

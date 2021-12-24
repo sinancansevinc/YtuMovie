@@ -17,30 +17,14 @@ namespace Server.Controllers
             this.context = context;
         }
 
-        //[HttpPost]
-        //[Route("add")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> Add(GenreRoot root)
-        //{
-        //    foreach (var item in root.genres)
-        //    {
-        //        var genreItem = new Genre();
-        //        genreItem.Id = item.Id;
-        //        genreItem.Name = item.Name;
-        //        await context.AddAsync(genreItem);
-        //        await context.SaveChangesAsync();
-        //    }
-
-        //    return Ok();
-        //}
 
         [HttpGet]
-        [Route("add")]
+        [Route("GetGenres")]
         [AllowAnonymous]
-        public async Task<List<Genre>> Get()
+        public async Task<IList<Genre>> Get()
         {
-
-            return context.Genres.ToList();
+            var result = context.Genres.ToList();
+            return result;
 
         }
     }

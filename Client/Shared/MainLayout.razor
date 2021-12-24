@@ -24,7 +24,7 @@ else
 {
     <div id="loader">
 
-       <Loader/>
+        <Loader />
 
     </div>
 }
@@ -37,16 +37,9 @@ else
 @code
 {
     bool isLoaded;
-    [Inject]HttpClient httpClient{ get; set; }
-    [Inject] IMovieService movieService { get; set; }
-
-    List<Genre> genres;
-
-
-
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(3000); // TODO actual initialization job
+        await Task.Delay(4000); // TODO actual initialization job
 
 
         isLoaded = true;

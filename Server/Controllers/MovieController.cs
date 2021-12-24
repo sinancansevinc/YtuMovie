@@ -14,7 +14,7 @@ namespace Server.Controllers
         private readonly MovieDBContext context;
         private readonly ILogger<MovieController> logger;
 
-        public MovieController(MovieDBContext context,ILogger<MovieController>logger)
+        public MovieController(MovieDBContext context, ILogger<MovieController> logger)
         {
             this.context = context;
             this.logger = logger;
@@ -32,12 +32,15 @@ namespace Server.Controllers
             return Ok();
         }
 
+       
+
+
         [HttpGet("getcomments/{id}")]
         public IList<CommentViewModel> GetMovieComments(int id)
         {
             try
             {
-                var comments=context.MovieComments.Where(comment => comment.Id == id).ToList();
+                var comments = context.MovieComments.Where(comment => comment.Id == id).ToList();
 
                 var ap = (from p in context.Users
                           join e in context.MovieComments on p.Id equals e.UserId
@@ -45,12 +48,9 @@ namespace Server.Controllers
                           {
                               UserName = p.UserName,
                               CommentDate = e.CreateDate,
-                              Comment=e.Comment
-                              
+                              Comment = e.Comment
+
                           }).ToList();
-
-
-
 
                 return ap;
                 //return movieService.GetMovieComments(id);

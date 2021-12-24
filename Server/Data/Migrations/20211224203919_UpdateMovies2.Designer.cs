@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Data;
 
 namespace Server.Data.Migrations
 {
     [DbContext(typeof(MovieDBContext))]
-    partial class MovieDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211224203919_UpdateMovies2")]
+    partial class UpdateMovies2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,71 +252,6 @@ namespace Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MovieComments");
-                });
-
-            modelBuilder.Entity("Shared.Models.MovieDatabase", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("adult")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("backdrop_path")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("genre_ids")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("new_date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("original_language")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("original_title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("overview")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("popularity")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("poster_path")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("release_date")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("trailer_link")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("video")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("vote_average")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("vote_count")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -12,6 +12,6 @@ namespace Server.Data
 
         public DbSet<MovieComment> MovieComments { get; set; }
         public DbSet<Genre> Genres { get; set; }
-
+        public DbSet<MovieDatabase> Movies { get; set; }
     }
 }

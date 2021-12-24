@@ -6,7 +6,9 @@ namespace Client.Services
     public interface IMovieService
     {
         Task<IList<CommentViewModel>> GetMovieComments(int id);
-        Task AddGenres();
+        Task<IList<Genre>> GetGenres();
         Task<HttpResponseMessage> AddComment(MovieComment movieComment);
+        Task<MovieRoot> GetMovieRoot(string apiUrl);
+
     }
 }
