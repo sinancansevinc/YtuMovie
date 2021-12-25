@@ -50,6 +50,8 @@ namespace Server.Controllers
 
             if (identityresult.Succeeded)
             {
+                await userManager.AddToRoleAsync(identityUser, "Founder");
+
                 return Ok(new { identityresult.Succeeded });
             }
             else
@@ -82,6 +84,7 @@ namespace Server.Controllers
             if (signInResult.Succeeded)
             {
                 IdentityUser identityUser = await userManager.FindByNameAsync(userName);
+                //await userManager.AddToRoleAsync(identityUser, "Founder");
                 string jwtString = await GenerateJsonWebToken(identityUser);
 
                 return Ok(jwtString);

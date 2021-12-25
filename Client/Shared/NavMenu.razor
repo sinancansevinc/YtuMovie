@@ -73,7 +73,8 @@ else
 </div>
 
 
-}
+}
+
 
 
 @code {
@@ -81,7 +82,6 @@ else
     [Inject] ILocalStorageService localStorage { get; set; }
     [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
     [Inject] NavigationManager navigationManager { get; set; }
-
     private bool collapseNavMenu = true;
     IList<Genre> genres { get; set; }
 
@@ -92,7 +92,7 @@ else
         collapseNavMenu = !collapseNavMenu;
     }
 
-  
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,5 +117,4 @@ else
         StateHasChanged();
 
     }
-
 }

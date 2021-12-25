@@ -72,6 +72,8 @@ namespace Client.Utilities
         {
             ClaimsPrincipal nobody = new ClaimsPrincipal(new ClaimsIdentity());
             Task<AuthenticationState> authenticationState = Task.FromResult(new AuthenticationState(nobody));
+            var claimList = nobody.Claims.ToList();
+
             NotifyAuthenticationStateChanged(authenticationState);
         }
 

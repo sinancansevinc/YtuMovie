@@ -36,6 +36,7 @@ namespace Server.Controllers
 
 
         [HttpGet("getcomments/{id}")]
+        [Authorize(Roles ="FOUNDER")]
         public IList<CommentViewModel> GetMovieComments(int id)
         {
             try

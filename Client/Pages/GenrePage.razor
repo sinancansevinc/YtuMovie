@@ -1,62 +1,62 @@
 ﻿@page "/genre/{genreid:int}"
 
-@if (movies == null)
+@if (isLoaded)
 {
-        <Loader />
+    <Loader />
 }
 else
 {
-        <div class="row">
+    <div class="row">
 
         @foreach (var movie in movies)
         {
-                    <div class="col-md-4">
-                        <div class="card" style="width: 18rem;margin-bottom: 25px">
-                            <img src="@movie.poster_path" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">@movie.title <span class="fa fa-star"></span> @movie.vote_average</h5>
-                                <p class="card-text">@movie.overview.Substring(0, 50) ...</p>
-                                <a class="btn btn-primary" @onclick="@(() => GoToDetail(movie.id))" style="color: white !important;" >Get Detail</a>
-                            </div>
-                        </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;margin-bottom: 25px">
+                    <img src="@movie.poster_path" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.title <span class="fa fa-star"></span> @movie.vote_average</h5>
+                        <p class="card-text">@movie.overview.Substring(0, 50) ...</p>
+                        <a class="btn btn-primary" @onclick="@(() => GoToDetail(movie.id))" style="color: white !important;">Get Detail</a>
                     </div>
+                </div>
+            </div>
         }
 
-        </div>
+    </div>
 
-        <div class="text-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
+    <div class="text-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
                     @if (currentPage > 1)
                     {
-                                <a class="page-link" @onclick="async()=>await GetMovies(currentPage-1)" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
+                        <a class="page-link" @onclick="async()=>await GetMovies(currentPage-1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     }
 
-                    </li>
+                </li>
 
 
-                    <li class="page-item"><a class="page-link" @onclick="async () => await GetMovies(currentPage)">@currentPage</a></li>
+                <li class="page-item"><a class="page-link" @onclick="async () => await GetMovies(currentPage)">@currentPage</a></li>
 
 
 
                 @if (!(currentPage > movieRoot.total_pages))
                 {
-                            <li class="page-item">
-                                <a class="page-link" @onclick="async () => await GetMovies(currentPage+1)" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
+                    <li class="page-item">
+                        <a class="page-link" @onclick="async () => await GetMovies(currentPage+1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
                 }
 
-                </ul>
-            </nav>
+            </ul>
+        </nav>
 
-        </div>
+    </div>
 }
 
 
@@ -77,44 +77,72 @@ else
 
 
 
-    public List<Movie> movies;
-    public MovieRoot movieRoot;
+
+    public List<Movie> movies{ get; set; }
+    public MovieRoot movieRoot{ get; set; }
     string startImg = "https://image.tmdb.org/t/p/w342";
     int currentPage = 1;
+    int i = 0;
+    bool isLoaded = true;
 
     protected override async Task OnInitializedAsync()
     {
         await GetMovies(currentPage);
+        Task.Delay(4000);
+        isLoaded = false;
 
     }
     protected override async Task OnParametersSetAsync()
     {
-       movies = movies.Where(p => p.genre_ids.Contains(GenreId)).ToList();
-
-
-        //foreach (var movie in movies)
+        //if (movies.Count > 1)
         //{
-        //    movie.poster_path = startImg + movie.poster_path;
-        //    string newDate = movie.release_date.Replace("-", string.Empty);
+        //    movies.RemoveAll(p => p.id > 1);
+
         //}
+       await GetMovies(currentPage);
+       Task.Delay(4000);
+        isLoaded = false;
+
 
         StateHasChanged();
     }
     private async Task GetMovies(int? i)
     {
-
-        if (i > 1)
-        {
-            RefreshUp();
-            currentPage = Convert.ToInt32(i);
-        }
         RefreshUp();
-            currentPage = Convert.ToInt32(i);
+        currentPage = Convert.ToInt32(i);
+
         string apiUrl = APIEndpoints.s_topRated + currentPage.ToString();
         movieRoot = await movieService.GetMovieRoot(apiUrl);
         movies = movieRoot.results;
         movies = movies.Where(p => p.genre_ids.Contains(GenreId)).ToList();
 
+        if (movies == null || movies.Count < 9)
+        {
+            while (true)
+            {
+                i += 1;
+
+                apiUrl = APIEndpoints.s_topRated + (currentPage + i).ToString();
+                movieRoot = await movieService.GetMovieRoot(apiUrl);
+                List<Movie> newMovies = new List<Movie>();
+                newMovies = movieRoot.results;
+                newMovies = newMovies.Where(p => p.genre_ids.Contains(GenreId)).ToList();
+                if ((movies.Count + newMovies.Count) > 9)
+                {
+                    movies.AddRange(newMovies.Take(9 - movies.Count));
+
+                }
+                else{
+                     movies.AddRange(newMovies);
+                }
+
+                if (movies.Count == 9)
+                {
+                    break;
+                }
+
+            }
+        }
 
         foreach (var movie in movies)
         {

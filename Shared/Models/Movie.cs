@@ -22,7 +22,7 @@ namespace Shared.Models
         public bool video { get; set; }
         public double vote_average { get; set; }
         public int vote_count { get; set; }
-        public DateTime new_date { get; set; }
+        //public DateTime new_date { get; set; }
         public string trailer_link { get; set; }
     }
 }
