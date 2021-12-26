@@ -47,7 +47,7 @@ else
                             </div>
                         </div>
                         <p class="product-description">@movie.overview</p>
-                      
+
                     </div>
                 </div>
             </div>
@@ -55,15 +55,14 @@ else
 
         <div class="row mt-50 mb-100">
             <div class="container mt-5 mb-5">
-                <div class="d-flex justify-content-center row">
+                <div class="d-flex justify-content-center row" style="background:white!important">
                     <div class="d-flex flex-column col-md-8">
                         @if (commentViewModel != null)
                         {
-
                             @foreach (var item in commentViewModel)
                             {
                                 <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
-                                    <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                                    <div class="profile-image"><img class="rounded-circle" src="/images/anonymous.jpg" width="70"></div>
                                     <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
                                     <div class="d-flex flex-column ml-3">
                                         <div class="d-flex flex-row post-title ml-10">
@@ -83,16 +82,23 @@ else
 
                                 <div class="coment-bottom bg-white p-2 px-4">
                                     <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                                        <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
-                                        <EditForm Context="comment" Model=@movieComment OnValidSubmit="@AddComment">
-                                            <InputText type="text" id="inoutComment" class="form-control mr-3" placeholder="Add comment" @bind-Value="movieComment.Comment"></InputText>
+                                        <img class="img-fluid img-responsive rounded-circle mr-2" src="/images/anonymous.jpg" width="70">
+                                        <div class="input-bar">
 
-                                            <ValidationMessage For="@(()=>movieComment.Comment)"></ValidationMessage>
+                                            <div class="input-bar-item width100">
+                                                <EditForm Context="comment" Model=@movieComment OnValidSubmit="@AddComment">
 
-                                            <button class="btn btn-primary ml-10" type="submit">Comment</button>
+                                                            <InputText type="text" id="inoutComment" class="formControl mr-3" placeholder="Add comment" @bind-Value="movieComment.Comment"></InputText>
+                                                            <ValidationMessage For="@(()=>movieComment.Comment)"></ValidationMessage>
 
-                                        </EditForm>
+                                                            <button class="btn btn-primary ml-10" type="submit">Comment</button>
 
+                                                </EditForm>
+
+                                            </div>
+
+
+                                        </div>
 
                                     </div>
 
@@ -105,8 +111,8 @@ else
                                 </NavLink>
                             </NotAuthorized>
                         </AuthorizeView>
-
                     </div>
+
                 </div>
             </div>
 
@@ -145,7 +151,7 @@ else
         if (loggedUser.Identity.IsAuthenticated)
         {
             movieComment.UserId = authState.User.Claims.FirstOrDefault(p => p.Type == "Id").Value;
-            var role = authState.User.Claims.FirstOrDefault(p=>p.Type.Contains("role")).Value;
+            var role = authState.User.Claims.FirstOrDefault(p => p.Type.Contains("role")).Value;
             movieComment.MovieId = MovieId;
         }
 
@@ -158,11 +164,11 @@ else
 
     private async Task GetMovie(int movieId)
     {
-        movie = await httpClient.GetFromJsonAsync<Movie>(APIEndpoints.s_movieDetail.Replace("movieId", movieId.ToString()));
+        movie = await movieService.GetMovie(movieId);
 
         movie.poster_path = APIEndpoints.s_startImg + movie.poster_path;
 
-        rootVideo = await httpClient.GetFromJsonAsync<VideoRoot>(APIEndpoints.s_videoUrl.Replace("movieId", movieId.ToString()));
+        rootVideo = await movieService.GetVideoRoot(movieId);
 
         videos = rootVideo.results;
 
@@ -181,26 +187,13 @@ else
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
-             var timer = new Timer(new TimerCallback(_ =>
-            {
-                navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
-            }), null, 2000, 2000);
+            var timer = new Timer(new TimerCallback(_ =>
+           {
+               navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+           }), null, 2000, 2000);
 
-          
+
             var url = "/moviedetail/" + MovieId.ToString();
-            //navigationManager.NavigateTo(url);
         }
-
-        //if (httpResponseMessage.IsSuccessStatusCode)
-        //{
-        //
-        //}
-
-
-
-
-
-
-
     }
 }

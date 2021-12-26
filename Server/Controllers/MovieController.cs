@@ -36,7 +36,7 @@ namespace Server.Controllers
 
 
         [HttpGet("getcomments/{id}")]
-        [Authorize(Roles ="FOUNDER")]
+        [AllowAnonymous]
         public IList<CommentViewModel> GetMovieComments(int id)
         {
             try

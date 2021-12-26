@@ -27,6 +27,12 @@ namespace Client.Services
             return result;
         }
 
+        public async  Task<Movie> GetMovie(int movieId)
+        {
+            var movie = await httpClient.GetFromJsonAsync<Movie>(APIEndpoints.s_movieDetail.Replace("movieId", movieId.ToString()));
+            return movie;
+        }
+
         public async Task<IList<CommentViewModel>> GetMovieComments(int id)
         {
             var url=APIEndpoints.s_getMovieComments+id.ToString();
@@ -39,6 +45,12 @@ namespace Client.Services
         {
             var result=await httpClient.GetFromJsonAsync<MovieRoot>(apiUrl);
 
+            return result;
+        }
+
+        public async Task<VideoRoot> GetVideoRoot(int movieId)
+        {
+            var result = await httpClient.GetFromJsonAsync<VideoRoot>(APIEndpoints.s_videoUrl.Replace("movieId", movieId.ToString()));
             return result;
         }
     }

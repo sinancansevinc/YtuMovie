@@ -44,6 +44,7 @@ namespace Server.Controllers
             {
                 Email = userName,
                 UserName = userName
+
             };
 
             IdentityResult identityresult = await userManager.CreateAsync(identityUser, password);
@@ -84,7 +85,6 @@ namespace Server.Controllers
             if (signInResult.Succeeded)
             {
                 IdentityUser identityUser = await userManager.FindByNameAsync(userName);
-                //await userManager.AddToRoleAsync(identityUser, "Founder");
                 string jwtString = await GenerateJsonWebToken(identityUser);
 
                 return Ok(jwtString);

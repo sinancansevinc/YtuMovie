@@ -9,6 +9,8 @@ namespace Client.Services
         Task<IList<Genre>> GetGenres();
         Task<HttpResponseMessage> AddComment(MovieComment movieComment);
         Task<MovieRoot> GetMovieRoot(string apiUrl);
+        Task<Movie> GetMovie(int movieId);
+        Task<VideoRoot> GetVideoRoot(int movieId);
 
     }
 }
