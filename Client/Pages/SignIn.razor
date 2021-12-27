@@ -21,7 +21,7 @@
 
         <ValidationSummary />
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+        <button class="btn btn-md btn-primary btn-block" type="submit">Sign In</button>
 
         @if (attempTosigninFailed)
         {
@@ -29,6 +29,8 @@
         }
 
     </EditForm>
+
+    <a href=""/register">Don't you have an account ?</a>
 }
 else
 {
@@ -40,6 +42,7 @@ else
 @code {
     [Inject] HttpClient httpClient { get; set; }
     [Inject] ILocalStorageService localStorage { get; set; }
+    [Inject] IMovieService movieService { get; set; }
     [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; }
 
 
@@ -50,7 +53,7 @@ else
 
     private async Task signinUser()
     {
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(APIEndpoints.s_signin, user);
+        HttpResponseMessage httpResponseMessage = await movieService.SignIn(user);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {

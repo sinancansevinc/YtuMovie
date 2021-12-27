@@ -18,7 +18,7 @@
 
             <ValidationSummary />
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Register</button>
 
             @if (attempToRegisterFailed)
             {
@@ -26,6 +26,9 @@
             }
 
         </EditForm>
+
+            <a href="/signin" class="btn btn-primary btn-lg">Do you have already an account ?</a>
+
 }
 else
 {
@@ -37,8 +40,8 @@ else
 
 
 @code {
-    [Inject]
-    HttpClient httpClient { get; set; }
+    [Inject] IMovieService movieService{ get; set; }
+
     private bool registerStatus = false;
     private string? registerErrorMessage = null;
     private bool attempToRegisterFailed = false;
@@ -47,7 +50,7 @@ else
 
     private async Task RegisterUser()
     {
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(APIEndpoints.s_register, user);
+        HttpResponseMessage httpResponseMessage = await movieService.Register(user);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
