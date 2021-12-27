@@ -151,7 +151,6 @@ else
         if (loggedUser.Identity.IsAuthenticated)
         {
             movieComment.UserId = authState.User.Claims.FirstOrDefault(p => p.Type == "Id").Value;
-            var role = authState.User.Claims.FirstOrDefault(p => p.Type.Contains("role")).Value;
             movieComment.MovieId = MovieId;
         }
 
