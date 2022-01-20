@@ -8,6 +8,7 @@ namespace Client.Services
         Task<IList<CommentViewModel>> GetMovieComments(int id);
         Task<IList<Genre>> GetGenres();
         Task<HttpResponseMessage> AddComment(MovieComment movieComment);
+        Task<HttpResponseMessage> DeleteComment(CommentViewModel commentViewModel);
         Task<HttpResponseMessage> SignIn(User user);
         Task<HttpResponseMessage> Register(User user);
         Task<MovieRoot> GetMovieRoot(string apiUrl);

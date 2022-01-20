@@ -71,10 +71,19 @@ else
                                         </div>
                                         <div class="d-flex flex-row align-items-center align-content-center post-title ml-10">
                                             <span>@item.CommentDate</span>
+
                                         </div>
-                                        <AuthorizeView Roles="FOUNDER">
-                                            <h6>SS</h6>
-                                        </AuthorizeView>
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <AuthorizeView Roles="FOUNDER">
+                                                <button @onclick="() => Delete(item)" style="margin-left:5px;" class="btn btn-danger">Delete</button>
+                                            </AuthorizeView>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             }
@@ -91,10 +100,10 @@ else
                                             <div class="input-bar-item width100">
                                                 <EditForm Context="comment" Model=@movieComment OnValidSubmit="@AddComment">
 
-                                                            <InputText type="text" id="inoutComment" class="formControl mr-3" placeholder="Add comment" @bind-Value="movieComment.Comment"></InputText>
-                                                            <ValidationMessage For="@(()=>movieComment.Comment)"></ValidationMessage>
+                                                    <InputText type="text" id="inoutComment" class="formControl mr-3" placeholder="Add comment" @bind-Value="movieComment.Comment"></InputText>
+                                                    <ValidationMessage For="@(()=>movieComment.Comment)"></ValidationMessage>
 
-                                                            <button class="btn btn-primary ml-10" type="submit">Comment</button>
+                                                    <button class="btn btn-primary ml-10" type="submit">Comment</button>
 
                                                 </EditForm>
 
@@ -144,6 +153,7 @@ else
     private MovieComment movieComment = new MovieComment();
 
 
+
     public string startVideo = APIEndpoints.s_startLink;
 
     protected override async Task OnInitializedAsync()
@@ -176,7 +186,21 @@ else
 
         if (videos.Count > 0)
         {
-            startVideo += videos.FirstOrDefault(p => p.type == "Trailer").key;
+            //startVideo += videos.FirstOrDefault(p => p.type == "Trailer").key;
+            //movie.trailer_link = startVideo;
+
+
+            var trailer = videos.FirstOrDefault(p => p.type == "Trailer").key;
+
+            if (trailer==null)
+            {
+                startVideo += videos[0].key;
+            }
+            else
+            {
+                startVideo += trailer;
+            }
+
             movie.trailer_link = startVideo;
 
         }
@@ -189,13 +213,42 @@ else
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
-            var timer = new Timer(new TimerCallback(_ =>
+
+            //var result =await  httpResponseMessage.Content.ReadFromJsonAsync<CommentViewModel>();
+            //commentView =result;
+
+            //CommentViewModel commentView = new CommentViewModel();
+            //commentView.Comment = movieComment.Comment;
+            //commentView.CommentDate = movieComment.CreateDate;
+            //commentView.CommentId = movieComment.Id;
+            //commentView.UserName = user.Email;
+
+
+            //commentViewModel.Add(commentView);
+
+            navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+
+
+        }
+    }
+    private async Task Delete(CommentViewModel cVm)
+    {
+        HttpResponseMessage httpResponseMessage = await movieService.DeleteComment(cVm);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            commentViewModel = commentViewModel.Where(p => p.CommentId != cVm.CommentId).ToList();
+        }
+
+    }
+    private void Refresh()
+    {
+        var timer = new Timer(new TimerCallback(_ =>
            {
                navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
            }), null, 2000, 2000);
 
 
-            var url = "/moviedetail/" + MovieId.ToString();
-        }
+        var url = "/moviedetail/" + MovieId.ToString();
     }
 }

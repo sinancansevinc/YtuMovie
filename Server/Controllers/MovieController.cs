@@ -28,32 +28,61 @@ namespace Server.Controllers
             movieComment.CreateDate = DateTime.Now;
             await context.AddAsync(movieComment);
             await context.SaveChangesAsync();
+            Thread.Sleep(1000);
+            return Ok(movieComment);
+        }
+        [Route("delete")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromBody] CommentViewModel commentViewModel)
+        {
+            MovieComment movieComment = new MovieComment();
+            movieComment = context.MovieComments.FirstOrDefault(p => p.Id == commentViewModel.CommentId);
 
-            return Ok();
+            if (movieComment != null)
+            {
+                context.MovieComments.Remove(movieComment);
+                await context.SaveChangesAsync();
+                return Ok();
+
+            }
+
+            return BadRequest();
         }
 
-       
+
 
 
         [HttpGet("getcomments/{id}")]
         [AllowAnonymous]
         public IList<CommentViewModel> GetMovieComments(int id)
         {
+            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+            List<MovieComment> movieComments = new List<MovieComment>();
             try
             {
-                var comments = context.MovieComments.Where(comment => comment.Id == id).ToList();
 
-                var ap = (from p in context.Users
-                          join e in context.MovieComments on p.Id equals e.UserId
-                          select new CommentViewModel
-                          {
-                              UserName = p.UserName,
-                              CommentDate = e.CreateDate,
-                              Comment = e.Comment
+                //movieComments = context.MovieComments.Where(comment => comment.MovieId == id).ToList();
 
-                          }).ToList();
+                //if (movieComments.Count > 0)
+                //{
+                    commentViewModels = (from p in context.Users
+                              join e in context.MovieComments.Where(x=>x.MovieId==id) on p.Id equals e.UserId 
+                              select new CommentViewModel
+                              {
+                                  UserName = p.UserName,
+                                  CommentDate = e.CreateDate,
+                                  Comment = e.Comment,
+                                  CommentId = e.Id
 
-                return ap;
+                              }).ToList();
+
+                //    return ap;
+                //}
+                //else
+                //{
+                return commentViewModels;
+                //}
                 //return movieService.GetMovieComments(id);
             }
             catch (Exception)

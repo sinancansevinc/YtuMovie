@@ -59,6 +59,12 @@ namespace Client.Services
 
             return response;
         }
+        public async Task<HttpResponseMessage> DeleteComment(CommentViewModel commentViewModel)
+        {
+            var result= await httpClient.PostAsJsonAsync(APIEndpoints.s_deleteComment, commentViewModel);
+
+            return result;
+        }
 
         public async Task<HttpResponseMessage> Register(User user)
         {
