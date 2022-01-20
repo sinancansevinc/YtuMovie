@@ -78,8 +78,8 @@ else
 
 
 
-    public List<Movie> movies{ get; set; }
-    public MovieRoot movieRoot{ get; set; }
+    public List<Movie> movies { get; set; }
+    public MovieRoot movieRoot { get; set; }
     string startImg = "https://image.tmdb.org/t/p/w342";
     int currentPage = 1;
     int i = 0;
@@ -94,13 +94,9 @@ else
     }
     protected override async Task OnParametersSetAsync()
     {
-        //if (movies.Count > 1)
-        //{
-        //    movies.RemoveAll(p => p.id > 1);
-
-        //}
-       await GetMovies(currentPage);
-       Task.Delay(3000);
+        currentPage = 1;
+        await GetMovies(currentPage);
+        Task.Delay(3000);
         isLoaded = false;
 
         StateHasChanged();
@@ -126,13 +122,15 @@ else
                 List<Movie> newMovies = new List<Movie>();
                 newMovies = movieRoot.results;
                 newMovies = newMovies.Where(p => p.genre_ids.Contains(GenreId)).ToList();
+
                 if ((movies.Count + newMovies.Count) > 9)
                 {
                     movies.AddRange(newMovies.Take(9 - movies.Count));
 
                 }
-                else{
-                     movies.AddRange(newMovies);
+                else
+                {
+                    movies.AddRange(newMovies);
                 }
 
                 if (movies.Count == 9)

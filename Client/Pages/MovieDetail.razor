@@ -190,18 +190,19 @@ else
             //movie.trailer_link = startVideo;
 
 
-            var trailer = videos.FirstOrDefault(p => p.type == "Trailer").key;
+            var trailer = videos.FirstOrDefault(p => p.type == "Trailer");
 
-            if (trailer==null)
+            if (trailer == null)
             {
                 startVideo += videos[0].key;
             }
             else
             {
-                startVideo += trailer;
+                startVideo += trailer.key;
+                movie.trailer_link = startVideo;
             }
 
-            movie.trailer_link = startVideo;
+            
 
         }
     }
