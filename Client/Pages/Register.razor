@@ -7,7 +7,7 @@
             <DataAnnotationsValidator />
             <div class="form-group my-3">
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <InputText type="text" id="inputEmail" class="form-control" placeholder="Username" @bind-Value="user.Email"></InputText>
+                <InputText type="text" id="inputEmail" class="form-control" placeholder="Email" @bind-Value="user.Email"></InputText>
                 <ValidationMessage For="@(()=>user.Email)"></ValidationMessage>
             </div>
             <div class="form-grou my-3">
@@ -27,7 +27,7 @@
 
         </EditForm>
 
-            <a href="/signin" class="btn btn-primary btn-lg">Do you have already an account ?</a>
+            <a href="/signin" style="margin-top:10px;" class="btn btn-primary btn-lg">Do you have already an account ?</a>
 
 }
 else
